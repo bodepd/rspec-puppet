@@ -41,7 +41,13 @@ module RSpec::Puppet
 
       description do
         type = referenced_type(expected_type)
-        "create #{type}['#{expected_title}']"
+        ret = "create #{type}['#{expected_title}'] :"
+        if @expected_params
+          @expected_params.each do |name, value|
+            ret << " with the parameter #{name.to_s} set to `#{value.inspect}`,"
+          end
+        end
+        ret
       end
 
       failure_message_for_should do |actual|
